@@ -400,7 +400,7 @@ export function ScheduleDetails({ modalProps, id, transaction }) {
       if (adding) {
         await onLinkTransactions([...selectedInst.items], res.data);
       }
-      dispatch(popModal());
+      globalDispatch(popModal());
     }
   }
 
@@ -777,7 +777,10 @@ export function ScheduleDetails({ modalProps, id, transaction }) {
         {state.error && (
           <Text style={{ color: theme.errorText }}>{state.error}</Text>
         )}
-        <Button style={{ marginRight: 10 }} onPress={() => dispatch(popModal())}>
+        <Button
+          style={{ marginRight: 10 }}
+          onPress={() => globalDispatch(popModal())}
+        >
           Cancel
         </Button>
         <Button variant="primary" onPress={onSave}>
