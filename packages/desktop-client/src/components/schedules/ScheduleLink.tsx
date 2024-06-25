@@ -2,7 +2,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { pushModal } from 'loot-core/client/actions';
+import { popModal, pushModal } from 'loot-core/client/actions';
 import { useSchedules } from 'loot-core/src/client/data-hooks/schedules';
 import { send } from 'loot-core/src/platform/client/fetch';
 import { type Query } from 'loot-core/src/shared/query';
@@ -21,7 +21,6 @@ import { ROW_HEIGHT, SchedulesTable } from './SchedulesTable';
 
 export function ScheduleLink({
   modalProps,
-  actions,
   transactionIds: ids,
   getTransaction,
 }: {
@@ -50,11 +49,11 @@ export function ScheduleLink({
         updated: ids.map(id => ({ id, schedule: scheduleId })),
       });
     }
-    actions.popModal();
+    dispatch(popModal());
   }
 
   async function onCreate() {
-    actions.popModal();
+    dispatch(popModal());
     dispatch(
       pushModal('schedule-edit', {
         id: null,
