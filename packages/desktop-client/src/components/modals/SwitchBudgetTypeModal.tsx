@@ -6,7 +6,7 @@ import { useResponsive } from '../../ResponsiveProvider';
 import { styles } from '../../style';
 import { Button } from '../common/Button';
 import { Link } from '../common/Link';
-import { Modal, ModalTitle } from '../common/Modal';
+import { Modal, ModalHeader, ModalTitle } from '../common/Modal2';
 import { Paragraph } from '../common/Paragraph';
 import { Text } from '../common/Text';
 import { type CommonModalProps } from '../Modals';
@@ -29,7 +29,12 @@ export function SwitchBudgetTypeModal({
     : {};
   return (
     <Modal
-      title={<ModalTitle title="Switch budget type?" shrinkOnOverflow />}
+      header={props => (
+        <ModalHeader
+          {...props}
+          title={<ModalTitle title="Switch budget type?" shrinkOnOverflow />}
+        />
+      )}
       {...modalProps}
     >
       <>
