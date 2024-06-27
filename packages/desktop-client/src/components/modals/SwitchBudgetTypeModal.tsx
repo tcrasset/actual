@@ -6,7 +6,12 @@ import { useResponsive } from '../../ResponsiveProvider';
 import { styles } from '../../style';
 import { Button } from '../common/Button';
 import { Link } from '../common/Link';
-import { Modal, ModalHeader, ModalTitle } from '../common/Modal2';
+import {
+  Modal,
+  ModalCloseButton,
+  ModalHeader,
+  ModalTitle,
+} from '../common/Modal2';
 import { Paragraph } from '../common/Paragraph';
 import { Text } from '../common/Text';
 import { type CommonModalProps } from '../Modals';
@@ -28,51 +33,49 @@ export function SwitchBudgetTypeModal({
       }
     : {};
   return (
-    <Modal
-      header={props => (
-        <ModalHeader
-          {...props}
-          title={<ModalTitle title="Switch budget type?" shrinkOnOverflow />}
-        />
-      )}
-      {...modalProps}
-    >
-      <>
-        <Paragraph>
-          You are currently using a{' '}
-          <Text style={{ fontWeight: 600 }}>
-            {budgetType === 'report' ? 'Report budget' : 'Rollover budget'}.
-          </Text>{' '}
-          Switching will not lose any data and you can always switch back.
-        </Paragraph>
-        <Button
-          type="primary"
-          style={{
-            ...narrowStyle,
-          }}
-          onClick={() => {
-            onSwitch?.();
-            modalProps.onClose?.();
-          }}
-        >
-          Switch to a{' '}
-          {budgetType === 'report' ? 'Rollover budget' : 'Report budget'}
-        </Button>
-        <Paragraph
-          isLast={true}
-          style={{
-            marginTop: 10,
-          }}
-        >
-          <Link
-            variant="external"
-            to="https://actualbudget.org/docs/experimental/report-budget"
-            linkColor="muted"
+    <Modal {...modalProps}>
+      {({ close }) => (
+        <>
+          <ModalHeader
+            title={<ModalTitle title="Switch budget type?" shrinkOnOverflow />}
+            rightContent={<ModalCloseButton onClick={close} />}
+          />
+          <Paragraph>
+            You are currently using a{' '}
+            <Text style={{ fontWeight: 600 }}>
+              {budgetType === 'report' ? 'Report budget' : 'Rollover budget'}.
+            </Text>{' '}
+            Switching will not lose any data and you can always switch back.
+          </Paragraph>
+          <Button
+            type="primary"
+            style={{
+              ...narrowStyle,
+            }}
+            onClick={() => {
+              onSwitch?.();
+              modalProps.onClose?.();
+            }}
           >
-            How do these types of budgeting work?
-          </Link>
-        </Paragraph>
-      </>
+            Switch to a{' '}
+            {budgetType === 'report' ? 'Rollover budget' : 'Report budget'}
+          </Button>
+          <Paragraph
+            isLast={true}
+            style={{
+              marginTop: 10,
+            }}
+          >
+            <Link
+              variant="external"
+              to="https://actualbudget.org/docs/experimental/report-budget"
+              linkColor="muted"
+            >
+              How do these types of budgeting work?
+            </Link>
+          </Paragraph>
+        </>
+      )}
     </Modal>
   );
 }
