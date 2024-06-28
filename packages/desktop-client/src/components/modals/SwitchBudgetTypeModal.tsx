@@ -34,7 +34,7 @@ export function SwitchBudgetTypeModal({
     : {};
   return (
     <Modal {...modalProps}>
-      {({ close }) => (
+      {({ state: { close } }) => (
         <>
           <ModalHeader
             title={<ModalTitle title="Switch budget type?" shrinkOnOverflow />}

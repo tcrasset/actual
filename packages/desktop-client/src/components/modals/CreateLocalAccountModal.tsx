@@ -45,7 +45,7 @@ export function CreateLocalAccountModal({
 
   return (
     <Modal {...modalProps}>
-      {({ close }) => (
+      {({ state: { close } }) => (
         <>
           <ModalHeader
             title={<ModalTitle title="Create Local Account" shrinkOnOverflow />}

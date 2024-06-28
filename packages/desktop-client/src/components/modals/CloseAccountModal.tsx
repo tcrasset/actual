@@ -87,8 +87,12 @@ export function CloseAccountModal({
     : {};
 
   return (
-    <Modal {...modalProps} style={{ maxWidth: '30vw' }} isLoading={loading}>
-      {({ close }) => (
+    <Modal
+      {...modalProps}
+      isLoading={loading}
+      contentProps={{ style: { width: '30vw' } }}
+    >
+      {({ state: { close } }) => (
         <>
           <ModalHeader
             title="Close Account"

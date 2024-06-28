@@ -1015,9 +1015,9 @@ export function ImportTransactions({ modalProps, options }) {
     <Modal
       {...modalProps}
       isLoading={loadingState === 'parsing'}
-      style={{ width: 800 }}
+      contentProps={{ style: { width: 800 } }}
     >
-      {({ close }) => (
+      {({ state: { close } }) => (
         <>
           <ModalHeader
             title={

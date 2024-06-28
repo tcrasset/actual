@@ -29,7 +29,7 @@ export function BudgetPageMenuModal({
 
   return (
     <Modal {...modalProps}>
-      {({ close }) => (
+      {({ state: { close } }) => (
         <>
           <ModalHeader
             showLogo
