@@ -14,15 +14,12 @@ import {
 } from '../common/Modal2';
 import { Paragraph } from '../common/Paragraph';
 import { Text } from '../common/Text';
-import { type CommonModalProps } from '../Modals';
 
 type SwitchBudgetTypeModalProps = {
-  modalProps: CommonModalProps;
   onSwitch: () => void;
 };
 
 export function SwitchBudgetTypeModal({
-  modalProps,
   onSwitch,
 }: SwitchBudgetTypeModalProps) {
   const [budgetType] = useLocalPref('budgetType');
@@ -33,7 +30,7 @@ export function SwitchBudgetTypeModal({
       }
     : {};
   return (
-    <Modal {...modalProps}>
+    <Modal name="switch-budget-type">
       {({ state: { close } }) => (
         <>
           <ModalHeader
@@ -54,7 +51,7 @@ export function SwitchBudgetTypeModal({
             }}
             onClick={() => {
               onSwitch?.();
-              modalProps.onClose?.();
+              close();
             }}
           >
             Switch to a{' '}

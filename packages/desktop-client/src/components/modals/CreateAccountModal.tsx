@@ -18,17 +18,14 @@ import { Modal, ModalCloseButton, ModalHeader } from '../common/Modal2';
 import { Paragraph } from '../common/Paragraph';
 import { Text } from '../common/Text';
 import { View } from '../common/View';
-import { type CommonModalProps } from '../Modals';
 import { Tooltip } from '../tooltips';
 
 type CreateAccountProps = {
-  modalProps: CommonModalProps;
   syncServerStatus: SyncServerStatus;
   upgradingAccountId?: string;
 };
 
 export function CreateAccountModal({
-  modalProps,
   syncServerStatus,
   upgradingAccountId,
 }: CreateAccountProps) {
@@ -178,7 +175,7 @@ export function CreateAccountModal({
   const simpleFinSyncFeatureFlag = useFeatureFlag('simpleFinSync');
 
   return (
-    <Modal {...modalProps}>
+    <Modal name="add-account">
       {({ state: { close } }) => (
         <>
           <ModalHeader

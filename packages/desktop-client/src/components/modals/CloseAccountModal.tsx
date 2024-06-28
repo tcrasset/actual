@@ -23,7 +23,6 @@ import { Modal, ModalCloseButton, ModalHeader } from '../common/Modal2';
 import { Paragraph } from '../common/Paragraph';
 import { Text } from '../common/Text';
 import { View } from '../common/View';
-import { type CommonModalProps } from '../Modals';
 
 function needsCategory(
   account: AccountEntity,
@@ -42,14 +41,12 @@ type CloseAccountModalProps = {
   account: AccountEntity;
   balance: number;
   canDelete: boolean;
-  modalProps: CommonModalProps;
 };
 
 export function CloseAccountModal({
   account,
   balance,
   canDelete,
-  modalProps,
 }: CloseAccountModalProps) {
   const accounts = useAccounts().filter(a => a.closed === 0);
   const { grouped: categoryGroups, list: categories } = useCategories();
@@ -88,9 +85,9 @@ export function CloseAccountModal({
 
   return (
     <Modal
-      {...modalProps}
+      name="close-account"
       isLoading={loading}
-      contentProps={{ style: { width: '30vw' } }}
+      containerProps={{ style: { width: '30vw' } }}
     >
       {({ state: { close } }) => (
         <>

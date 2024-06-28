@@ -735,7 +735,7 @@ function FieldMappings({
   );
 }
 
-export function ImportTransactions({ modalProps, options }) {
+export function ImportTransactions({ options }) {
   const dateFormat = useDateFormat() || 'MM/dd/yyyy';
   const prefs = useLocalPrefs();
   const { parseTransactions, importTransactions, getPayees, savePrefs } =
@@ -990,8 +990,6 @@ export function ImportTransactions({ modalProps, options }) {
     if (onImported) {
       onImported(didChange);
     }
-
-    modalProps.onClose();
   }
 
   const headers = [
@@ -1013,9 +1011,9 @@ export function ImportTransactions({ modalProps, options }) {
 
   return (
     <Modal
-      {...modalProps}
+      name="import-transactions"
       isLoading={loadingState === 'parsing'}
-      contentProps={{ style: { width: 800 } }}
+      containerProps={{ style: { width: 800 } }}
     >
       {({ state: { close } }) => (
         <>
@@ -1291,7 +1289,10 @@ export function ImportTransactions({ modalProps, options }) {
                 type="primary"
                 disabled={transactions.length === 0}
                 loading={loadingState === 'importing'}
-                onClick={onImport}
+                onClick={() => {
+                  onImport();
+                  close();
+                }}
               >
                 Import {transactions.length} transactions
               </ButtonWithLoading>

@@ -671,7 +671,7 @@ const conditionFields = [
     ['amount-outflow', mapField('amount', { outflow: true })],
   ]);
 
-export function EditRule({ modalProps, defaultRule, onSave: originalOnSave }) {
+export function EditRule({ defaultRule, onSave: originalOnSave }) {
   const [conditions, setConditions] = useState(
     defaultRule.conditions.map(parse),
   );
@@ -888,7 +888,6 @@ export function EditRule({ modalProps, defaultRule, onSave: originalOnSave }) {
       }
 
       originalOnSave?.(rule);
-      modalProps.onClose();
     }
   }
 
@@ -902,7 +901,7 @@ export function EditRule({ modalProps, defaultRule, onSave: originalOnSave }) {
   const showSplitButton = actionSplits.length > 0;
 
   return (
-    <Modal {...modalProps} contentProps={{ style: { flex: 'inherit' } }}>
+    <Modal name="edit-rule">
       {({ state: { close } }) => (
         <>
           <ModalHeader
@@ -1146,7 +1145,13 @@ export function EditRule({ modalProps, defaultRule, onSave: originalOnSave }) {
                   style={{ marginTop: 20 }}
                 >
                   <Button onClick={close}>Cancel</Button>
-                  <Button type="primary" onClick={() => onSave()}>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      onSave();
+                      close();
+                    }}
+                  >
                     Save
                   </Button>
                 </Stack>

@@ -1,9 +1,10 @@
 // @ts-strict-ignore
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
+import { createAccount } from 'loot-core/client/actions';
 import { toRelaxedNumber } from 'loot-core/src/shared/util';
 
-import { type BoundActions } from '../../hooks/useActions';
 import { useNavigate } from '../../hooks/useNavigate';
 import { theme } from '../../style';
 import { Button } from '../common/Button';
@@ -22,18 +23,10 @@ import {
 import { Text } from '../common/Text';
 import { View } from '../common/View';
 import { Checkbox } from '../forms';
-import { type CommonModalProps } from '../Modals';
 
-type CreateLocalAccountProps = {
-  modalProps: CommonModalProps;
-  actions: BoundActions;
-};
-
-export function CreateLocalAccountModal({
-  modalProps,
-  actions,
-}: CreateLocalAccountProps) {
+export function CreateLocalAccountModal() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [offbudget, setOffbudget] = useState(false);
   const [balance, setBalance] = useState('0');
@@ -44,7 +37,7 @@ export function CreateLocalAccountModal({
   const validateBalance = balance => !isNaN(parseFloat(balance));
 
   return (
-    <Modal {...modalProps}>
+    <Modal name="add-local-account">
       {({ state: { close } }) => (
         <>
           <ModalHeader
@@ -64,10 +57,8 @@ export function CreateLocalAccountModal({
 
                 if (!nameError && !balanceError) {
                   close();
-                  const id = await actions.createAccount(
-                    name,
-                    toRelaxedNumber(balance),
-                    offbudget,
+                  const id = await dispatch(
+                    createAccount(name, toRelaxedNumber(balance), offbudget),
                   );
                   navigate('/accounts/' + id);
                 }
@@ -173,7 +164,7 @@ export function CreateLocalAccountModal({
               )}
 
               <ModalButtons>
-                <Button onClick={() => modalProps.onBack()}>Back</Button>
+                <Button onClick={close}>Back</Button>
                 <Button type="primary" style={{ marginLeft: 10 }}>
                   Create
                 </Button>

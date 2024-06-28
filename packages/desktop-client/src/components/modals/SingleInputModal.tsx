@@ -12,10 +12,9 @@ import { InitialFocus } from '../common/InitialFocus';
 import { Modal, ModalCloseButton, type ModalHeader } from '../common/Modal2';
 import { View } from '../common/View';
 import { InputField } from '../mobile/MobileForms';
-import { type CommonModalProps } from '../Modals';
 
 type SingleInputModalProps = {
-  modalProps: Partial<CommonModalProps>;
+  name: string;
   Header: ComponentType<ComponentPropsWithoutRef<typeof ModalHeader>>;
   buttonText: string;
   onSubmit: (value: string) => void;
@@ -24,7 +23,7 @@ type SingleInputModalProps = {
 };
 
 export function SingleInputModal({
-  modalProps,
+  name,
   Header,
   buttonText,
   onSubmit,
@@ -42,11 +41,10 @@ export function SingleInputModal({
     }
 
     onSubmit?.(value);
-    modalProps.onClose();
   };
 
   return (
-    <Modal {...modalProps}>
+    <Modal name={name}>
       {({ state: { close } }) => (
         <>
           <Header rightContent={<ModalCloseButton onClick={close} />} />
@@ -56,7 +54,10 @@ export function SingleInputModal({
                 placeholder={inputPlaceholder}
                 defaultValue={value}
                 onUpdate={setValue}
-                onEnter={e => _onSubmit(e.currentTarget.value)}
+                onEnter={e => {
+                  _onSubmit(e.currentTarget.value);
+                  close();
+                }}
               />
             </InitialFocus>
             {errorMessage && (
@@ -85,7 +86,10 @@ export function SingleInputModal({
                 marginLeft: styles.mobileEditingPadding,
                 marginRight: styles.mobileEditingPadding,
               }}
-              onClick={() => _onSubmit(value)}
+              onClick={() => {
+                _onSubmit(value);
+                close();
+              }}
             >
               {buttonText}
             </Button>

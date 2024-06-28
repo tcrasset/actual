@@ -23,17 +23,14 @@ import {
 import { Paragraph } from '../common/Paragraph';
 import { Text } from '../common/Text';
 import { View } from '../common/View';
-import { type CommonModalProps } from '../Modals';
 
 type CreateEncryptionKeyModalProps = {
-  modalProps: CommonModalProps;
   options: {
     recreate?: boolean;
   };
 };
 
 export function CreateEncryptionKeyModal({
-  modalProps,
   options = {},
 }: CreateEncryptionKeyModalProps) {
   const [password, setPassword] = useState('');
@@ -62,12 +59,11 @@ export function CreateEncryptionKeyModal({
       dispatch(sync());
 
       setLoading(false);
-      modalProps.onClose();
     }
   }
 
   return (
-    <Modal {...modalProps} onClose={modalProps.onClose}>
+    <Modal name="create-encryption-key">
       {({ state: { close } }) => (
         <>
           <ModalHeader
@@ -155,6 +151,7 @@ export function CreateEncryptionKeyModal({
             onSubmit={e => {
               e.preventDefault();
               onCreateKey();
+              close();
             }}
           >
             <View style={{ alignItems: 'center' }}>
