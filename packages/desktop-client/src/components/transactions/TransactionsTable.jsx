@@ -60,7 +60,7 @@ import { styles, theme } from '../../style';
 import { AccountAutocomplete } from '../autocomplete/AccountAutocomplete';
 import { CategoryAutocomplete } from '../autocomplete/CategoryAutocomplete';
 import { PayeeAutocomplete } from '../autocomplete/PayeeAutocomplete';
-import { Button } from '../common/Button';
+import { Button } from '../common/Button2';
 import { Text } from '../common/Text';
 import { View } from '../common/View';
 import { getStatusProps } from '../schedules/StatusBadge';
@@ -428,8 +428,9 @@ function HeaderCell({
       }}
       unexposedContent={({ value: cellValue }) => (
         <Button
-          type="bare"
-          onClick={onClick}
+          variant="bare"
+          aria-label={`Sort by ${id}`}
+          onPress={onClick}
           style={{
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -617,13 +618,13 @@ function PayeeIcons({
     return null;
   }
 
-  const buttonStyle = {
+  const buttonStyle = ({ isHovered }) => ({
     marginLeft: -5,
     marginRight: 2,
     width: 23,
     height: 23,
-    color: 'inherit',
-  };
+    color: isHovered ? theme.tableText : theme.tableTextSubdued,
+  });
 
   const scheduleIconStyle = { width: 13, height: 13 };
 
@@ -635,10 +636,10 @@ function PayeeIcons({
     <>
       {schedule && (
         <Button
-          type="bare"
+          variant="bare"
+          aria-label="See schedule details"
           style={buttonStyle}
-          onClick={e => {
-            e.stopPropagation();
+          onPress={() => {
             onNavigateToSchedule(scheduleId);
           }}
         >
@@ -651,11 +652,10 @@ function PayeeIcons({
       )}
       {transferAccount && (
         <Button
-          type="bare"
-          aria-label="Transfer"
+          variant="bare"
+          aria-label="See transfer account"
           style={buttonStyle}
-          onClick={e => {
-            e.stopPropagation();
+          onPress={() => {
             if (!isTemporaryId(transaction.id)) {
               onNavigateToTransferAccount(transferAccount.id);
             }
@@ -1402,18 +1402,20 @@ function TransactionError({
             </Text>
             <View style={{ flex: 1 }} />
             <Button
-              type="normal"
+              variant="normal"
+              aria-label="Distribute"
               style={{ marginLeft: 15 }}
-              onClick={onDistributeRemainder}
+              onPress={onDistributeRemainder}
               data-testid="distribute-split-button"
-              disabled={!canDistributeRemainder}
+              isDisabled={!canDistributeRemainder}
             >
               Distribute
             </Button>
             <Button
-              type="primary"
+              variant="primary"
+              aria-label="Add split"
               style={{ marginLeft: 10, padding: '4px 10px' }}
-              onClick={onAddSplit}
+              onPress={onAddSplit}
               data-testid="add-split-button"
             >
               Add Split
@@ -1537,8 +1539,9 @@ function NewTransaction({
         }}
       >
         <Button
+          aria-label="Cancel"
           style={{ marginRight: 10, padding: '4px 10px' }}
-          onClick={() => onClose()}
+          onPress={() => onClose()}
           data-testid="cancel-button"
         >
           Cancel
@@ -1555,9 +1558,10 @@ function NewTransaction({
           />
         ) : (
           <Button
-            type="primary"
+            aria-label="Add"
+            variant="primary"
             style={{ padding: '4px 10px' }}
-            onClick={onAdd}
+            onPress={onAdd}
             data-testid="add-button"
           >
             Add
@@ -2284,9 +2288,10 @@ function notesTagFormatter(notes, onNotesTagClick) {
             return (
               <span key={`${validTag}${ti}`}>
                 <Button
-                  type="bare"
+                  aria-label={validTag}
+                  variant="bare"
                   key={i}
-                  style={{
+                  style={({ isHovered }) => ({
                     display: 'inline-flex',
                     padding: '3px 7px',
                     borderRadius: 16,
@@ -2294,13 +2299,11 @@ function notesTagFormatter(notes, onNotesTagClick) {
                     backgroundColor: theme.noteTagBackground,
                     color: theme.noteTagText,
                     cursor: 'pointer',
-                  }}
-                  hoveredStyle={{
-                    backgroundColor: theme.noteTagBackgroundHover,
-                    color: theme.noteTagText,
-                  }}
-                  onClick={e => {
-                    e.stopPropagation();
+                    ...(isHovered
+                      ? { backgroundColor: theme.noteTagBackgroundHover }
+                      : {}),
+                  })}
+                  onPress={() => {
                     onNotesTagClick?.(validTag);
                   }}
                 >
